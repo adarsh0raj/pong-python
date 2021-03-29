@@ -25,19 +25,21 @@ class Pong(object):
     def __init__(self,width,height):
         pygame.init()
         pygame.mixer.init()
-        pygame.display.set_caption("MR. BITCOINSKI")
+        pygame.display.set_caption("BitPong")
 
-        self.img = pygame.image.load('../bitcoin_image.png')
+        self.img = pygame.image.load('./btc.png')
         self.img = pygame.transform.scale(self.img, (40, 40))
         self.ball_object = GameObject(self.img)
         
         self.sound = pygame.mixer.Sound("Game/ball.wav")
+        self.sound2 = pygame.mixer.Sound("Game/error.wav")
         self.display_width = width
         self.display_height = height
         self.display = pygame.display.set_mode((self.display_width, self.display_height))
-        self.bg_color = (44, 62, 80)
+        # self.bg_color = (44, 62, 80)
+        self.bg_color = (255,255,255)
         self.ball_x = random.randint(300, 340)
-        self.ball_y = random.randint(0, 50)
+        self.ball_y = random.randint(240, 260)
         self.left_paddle_mv = self.right_paddle_mv = self.centery = 240
         self.ball_side = 40
         self.color = (41,128,185)
@@ -48,11 +50,11 @@ class Pong(object):
         self.speed = 3;
         self.hit_edge_left = False
         self.hit_edge_right = False
-        self.paddle_height = 75
-        self.paddle_width = 10
+        self.paddle_height = 120
+        self.paddle_width = 20
         self.info_division_height = 5
         # make height of information area 10% of window height
-        self.info_area = (0.1 * self.display_height)  
+        self.info_area = (0.15 * self.display_height)  
         self.game_area_top = self.info_area
         self.game_area_bottom = self.display_height 
         #self.ball_rect = pygame.Rect(self.ball_x,self.ball_y,
@@ -66,6 +68,10 @@ class Pong(object):
 		# set volume
         self.sound.set_volume(0.8)
 
+    def play_sound2(self):
+        self.channel = self.sound2.play()
+        self.sound2.set_volume(0.6)
+
     def info(self):
         ## division
         # y coordinate for division line
@@ -78,6 +84,7 @@ class Pong(object):
         ## printing scores 
         pygame.font.init()
         font = pygame.font.SysFont("agencyfb", 20)
+        font2 = pygame.font.SysFont("agencyfb", 24, bold=True)
         # score for left paddle
         left_label = font.render("%d" %self.score[0], 1, self.color_3)
         self.display.blit(left_label, (45, 13))
@@ -86,10 +93,13 @@ class Pong(object):
         self.display.blit(right_label, (596, 13))
         # reset instruction
         reset_label = font.render("Press Enter or Space to reset", 1, self.color_3)
-        self.display.blit(reset_label, (240, 2))
+        self.display.blit(reset_label, (220, 30))
         # quit instruction
         quit_label = font.render("Press Escape to quit", 1, self.color_3)
-        self.display.blit(quit_label, (267, 20))
+        self.display.blit(quit_label, (250, 50))
+        # Title 
+        title = font2.render("MR. BITCOINSKI", 1, (0,0,0))
+        self.display.blit(title, (240, 10))
 
 
     def fill(self):
@@ -170,6 +180,7 @@ class Pong(object):
         if (self.ball_rect.centerx + 20 >= self.display_width):
             self.direction[0] = -1
             self.hit_edge_left = True
+            self.play_sound2()
             
         # Change direction of puck if it hits the left paddle
         if (self.ball_rect.centerx - 20 <= self.paddle_width) and (self.ball_rect.centerx - 20 >= 0):
@@ -182,6 +193,7 @@ class Pong(object):
         if(self.ball_rect.centerx - 20 <= 0):
             self.direction[0] = 1
             self.hit_edge_right = True
+            self.play_sound2()
 
         # change direction of puck when it hits the top or bottom 
         # for top
@@ -222,7 +234,7 @@ class Pong(object):
         # On pressing Return/Enter or Escape key, reset game 
         if key[K_RETURN] or key[K_SPACE]:
             self.ball_x = random.randint(300, 340)
-            self.ball_y = random.randint(0, 50)
+            self.ball_y = random.randint(240, 260)
             self.left_paddle_mv = self.right_paddle_mv = random.randint(300,340)
             self.direction = [1, 1]
             self.score = [0, 0]
