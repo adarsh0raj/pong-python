@@ -36,8 +36,8 @@ class Pong(object):
         self.display_width = width
         self.display_height = height
         self.display = pygame.display.set_mode((self.display_width, self.display_height))
-        # self.bg_color = (44, 62, 80)
-        self.bg_color = (255,255,255)
+        self.bg_color = (44, 62, 80)
+        # self.bg_color = (255,255,255)
         self.ball_x = random.randint(300, 340)
         self.ball_y = random.randint(240, 260)
         self.left_paddle_mv = self.right_paddle_mv = self.centery = 240
@@ -84,7 +84,7 @@ class Pong(object):
         ## printing scores 
         pygame.font.init()
         font = pygame.font.SysFont("agencyfb", 20)
-        font2 = pygame.font.SysFont("agencyfb", 24, bold=True)
+        font2 = pygame.font.SysFont("ubuntumono", 24, bold=True)
         # score for left paddle
         left_label = font.render("%d" %self.score[0], 1, self.color_3)
         self.display.blit(left_label, (45, 13))
@@ -98,8 +98,8 @@ class Pong(object):
         quit_label = font.render("Press Escape to quit", 1, self.color_3)
         self.display.blit(quit_label, (250, 50))
         # Title 
-        title = font2.render("MR. BITCOINSKI", 1, (0,0,0))
-        self.display.blit(title, (240, 10))
+        title = font2.render("MR. BITCOINSKI", 1, (255,153,51) )
+        self.display.blit(title, (230, 5))
 
 
     def fill(self):
